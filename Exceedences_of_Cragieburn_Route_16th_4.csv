@@ -1,0 +1,6 @@
+GPS files created from Cragieburn_Route_16th_4.csv
+Analysis type:,Fourier Analysis
+Latitude,Longitude,Analysis Type,Accelerometer Location,Direction,Value,Frequency(Hz),Time,Speed
+-37.6020385963,144.943232586,Fourier Analysis,Body,Lateral,0.261960626294,0.390625,1790.56,7.33691784917
+-37.6021160963,144.943214586,Average Peak to Peak,Body,Lateral,0.409759679448,N/A,1787.93,6.50225506192
+-37.6020919963,144.943219986,Base Acceleration,Body,Lateral,-1.06100500083,N/A,1789.78,4.44753369007

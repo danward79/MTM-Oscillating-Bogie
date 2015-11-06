@@ -1,0 +1,9 @@
+GPS files created from Metro_route_25th_4.csv
+Analysis type:,Fourier Analysis
+Latitude,Longitude,Analysis Type,Accelerometer Location,Direction,Value,Frequency(Hz),Time,Speed
+-37.7981290963,144.915988486,Fourier Analysis,Bogie 1,Vertical,0.200085255596,9.765625,309.13,82.5198296832
+-37.7982234963,144.916645486,Fourier Analysis,Bogie 2,Vertical,0.202962487167,9.765625,306.57,82.2830896671
+-37.7981290963,144.915988486,Fourier Analysis,Bogie 2,Vertical,0.303665065834,9.765625,309.13,82.5198296832
+-37.7981482963,144.916094186,Base Acceleration,Bogie 1,Vertical,-0.856302771102,N/A,308.72,82.0600068255
+-37.7987359963,144.919905486,Base Acceleration,Bogie 2,Vertical,0.842144640317,N/A,293.66,79.8673421535
+-37.7981605963,144.916275786,Base Acceleration,Bogie 2,Vertical,-0.802492001746,N/A,308.06,82.466924811

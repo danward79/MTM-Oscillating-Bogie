@@ -1,0 +1,4 @@
+GPS files created from Flemington_Route_17th_1.csv
+Analysis type:,Base Acceleration
+Latitude,Longitude,Analysis Type,Accelerometer Location,Direction,Value,Frequency(Hz),Time,Speed
+-37.8067248963,144.941840686,Base Acceleration,Body,Lateral,-1.1252632311,N/A,4347.60000005,4.34481726568

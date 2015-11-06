@@ -1,0 +1,30 @@
+ Volume in drive C has no label.
+ Volume Serial Number is DA27-0EB9
+
+ Directory of C:\Users\Luis Rico\Documents\Sync_to_Backup\GitHub_desktop_repos\MTM-Bogie-Study\Other batch\CSV Outputs
+
+05/11/2015  04:44 PM    <DIR>          .
+05/11/2015  04:44 PM    <DIR>          ..
+04/11/2015  06:19 PM             3,571 Exceedences_of_Cragieburn_Route_16th_3.csv
+04/11/2015  06:19 PM               496 Exceedences_of_Cragieburn_Route_16th_4.csv
+04/11/2015  06:19 PM             1,129 Exceedences_of_Cragieburn_Route_22nd_7.csv
+04/11/2015  06:20 PM             1,208 Exceedences_of_Cragieburn_Route_25th_2.csv
+04/11/2015  06:23 PM            17,059 Exceedences_of_Cranbourne_Route_3rd_1.csv
+04/11/2015  06:25 PM               291 Exceedences_of_Flemington_Route_17th_1.csv
+04/11/2015  06:26 PM               296 Exceedences_of_Frankston_Route_28th_10.csv
+04/11/2015  06:27 PM               407 Exceedences_of_Frankston_Route_28th_8.csv
+04/11/2015  06:28 PM             1,202 Exceedences_of_Frankston_Route_29th_2.csv
+04/11/2015  06:38 PM             9,819 Exceedences_of_Packenham_Route_3rd_2.csv
+04/11/2015  06:39 PM               290 Exceedences_of_Sandringham_Route_23rd_5.csv
+04/11/2015  06:39 PM               290 Exceedences_of_Sandringham_Route_23rd_6.csv
+04/11/2015  06:42 PM            11,157 Exceedences_of_Sunbury_Route_22nd_6.csv
+04/11/2015  06:43 PM             7,301 Exceedences_of_Sunbury_Route_25th_1.csv
+04/11/2015  06:44 PM               605 Exceedences_of_Sunbury_Route_25th_4.csv
+04/11/2015  06:45 PM             5,392 Exceedences_of_Sunbury_Route_26th_2.csv
+04/11/2015  06:47 PM            17,835 Exceedences_of_Werribee_Route_23rd_2.csv
+04/11/2015  06:48 PM            17,466 Exceedences_of_Werribee_Route_28th_11.csv
+04/11/2015  06:48 PM            12,691 Exceedences_of_Werribee_Route_29th_1.csv
+04/11/2015  06:50 PM            30,961 Exceedences_of_Werribee_Route_29th_3.csv
+05/11/2015  04:44 PM                 0 files.txt
+              21 File(s)        139,466 bytes
+               2 Dir(s)  145,527,255,040 bytes free

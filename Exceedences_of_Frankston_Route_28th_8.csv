@@ -1,0 +1,5 @@
+GPS files created from Frankston_Route_28th_8.csv
+Analysis type:,Base Acceleration
+Latitude,Longitude,Analysis Type,Accelerometer Location,Direction,Value,Frequency(Hz),Time,Speed
+-38.1108000963,145.130645986,Base Acceleration,Bogie 2,Vertical,-0.821614793759,N/A,3091.70000002,90.911692689
+-38.0933909963,145.128210586,Base Acceleration,Bogie 2,Vertical,0.833846971533,N/A,3234.68000002,91.9267111383

@@ -1,0 +1,7 @@
+GPS files created from Metro_route_25th_2.csv
+Analysis type:,Base Acceleration
+Latitude,Longitude,Analysis Type,Accelerometer Location,Direction,Value,Frequency(Hz),Time,Speed
+-37.6184753963,144.939492886,Base Acceleration,Bogie 1,Vertical,-0.811815301593,N/A,2976.48000002,98.0075181019
+-37.6183791963,144.939512586,Base Acceleration,Bogie 2,Vertical,0.806486737411,N/A,2975.88000002,98.2300411858
+-37.6442957963,144.934267186,Base Acceleration,Bogie 2,Vertical,0.833425954713,N/A,3150.77000002,88.7028585504
+-37.6723902963,144.923830586,Base Acceleration,Bogie 2,Vertical,0.82479082557,N/A,3341.59000003,85.9255314243
