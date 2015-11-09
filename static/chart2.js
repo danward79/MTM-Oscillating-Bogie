@@ -25,8 +25,12 @@ function makeGraphs(error, data) {
 	//		d.Exceedence_Date = parseDate(d.Date);
 			
 	//	});
+	
+console.log("llegue aqui");
 		
 var ndx = crossfilter(data);
+
+console.log("after crossfilter");
 
 var all = ndx.groupAll();
 
@@ -50,15 +54,17 @@ var all = ndx.groupAll();
 		rangeChart = dc.barChart('#range-chart');	// Note that 'var' has been removed in order to be able to reset chart
 		
 		//var Excedeence_Count=timeDim.group().reduceSum(function(d)
-			//{return d['Exceedence Instance'];} );
+		//	{return d['Exceedence Instance'];} );
 		
 		var timeDimGroup = timeDim.group();
 		
-		var SpeedGroup = timeDimGroup.reduce(function(d)
+		var SpeedGroup = timeDimGroup.reduceSum(function(d)
 			{return d['Speed'];} );
 			
 		// var tooltipDateFormat = d3.time.format("%a %e %b %Y");
 		var tooltipDateFormat = d3.time.format("%b %Y");
+		
+		console.log("before lineChart definition");
 		
 		lineChart                       
 			.width(750).height(205)
@@ -74,8 +80,10 @@ var all = ndx.groupAll();
 			//.title(function(d){						// tooltips are shown by using the title function. Also, brushOn must be set to false
 			//  return tooltipDateFormat(d.data.key) + "\nNumber of Exceedences: " + d.data.value; })  // Note that data, key and value are reserved words for the function and do not correspond to fields in the imported data
 			.elasticY(true)
-			.rangeChart(rangeChart)
+			//.rangeChart(rangeChart)
 			.yAxisLabel("Exceedence Count");
+			
+		console.log("before rangeChart definition");
 			
 		rangeChart
 		    .width(750).height(70)
