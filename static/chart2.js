@@ -66,6 +66,7 @@ var all = ndx.groupAll();
 		
 		console.log("before lineChart definition");
 		
+	
 		lineChart                       
 			.width(750).height(205)
 			.dimension(timeDim)
@@ -80,8 +81,35 @@ var all = ndx.groupAll();
 			//.title(function(d){						// tooltips are shown by using the title function. Also, brushOn must be set to false
 			//  return tooltipDateFormat(d.data.key) + "\nNumber of Exceedences: " + d.data.value; })  // Note that data, key and value are reserved words for the function and do not correspond to fields in the imported data
 			.elasticY(true)
-			//.rangeChart(rangeChart)
+			.on('renderlet', function(lineChart) {
+				//lineChart.selectAll('rect').on("click", function(d) {
+				//	console.log("click!", d);
+				//});
+				var left_y = 1, right_y = 7; // use real statistics here!
+				var extra_data = [{x: lineChart.x().range()[0], y: lineChart.y()(left_y)}, {x: lineChart.x().range()[1], y: lineChart.y()(right_y)}];
+				var line = d3.svg.line()
+					.x(function(d) { return d.x; })
+					.y(function(d) { return d.y; })
+					.interpolate('linear');
+				var path = lineChart.select('g.chart-body').selectAll('path.extra').data([extra_data]);
+				path.enter().append('path').attr('class', 'extra').attr('stroke', 'red');
+				path.attr('d', line);
+			})
 			.yAxisLabel("Exceedence Count");
+			
+		//lineChart.chartBodyG().append();
+		
+		//var line = d3.svg.line()
+		  //.x(function(d) {return chart.x()(d.x);})
+		  //.y(function(d) {return chart.y()(d.y);});
+
+		  
+		//var path = line([{x:0,y:1},{x:100,y:1}]);
+
+		//chart.svg().append("path").attr("d",path)		
+	
+		//lineChart.svg().append("path").attr("d",path);
+		//lineChart.chartBodyG().append("path").attr("d",path);
 			
 		console.log("before rangeChart definition");
 			
