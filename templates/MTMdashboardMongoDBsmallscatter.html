@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MTM Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="/static/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/keen-dashboards.css" />
+  <script type="text/javascript" src="/static/crossfilter.js"></script>
+  <script src="/static/d3.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/dc.css" media="screen" /> 
+  <script src="/static/dcWebExamples.js" type="text/javascript"></script>
+  
+  <link rel="stylesheet" type="text/css" href="/static/jquery.dataTables.min.css" />
+  <script src="/static/jquery-1.11.3.min.js" type="text/javascript"></script>
+  <script src="/static/jquery.dataTables.min.js" type="text/javascript"></script>
+  
+  <script type="text/javascript" src="/static/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/holder.js"></script>
+  <script>
+    Holder.add_theme("white", { background:"#fff", foreground:"#a7a7a7", size:10 });
+  </script>
+
+  <script type="text/javascript" src="/static/keen.min.js"></script>
+  <script type="text/javascript" src="/static/meta.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/rotateXaxisLabelsLHR.css" media="screen" />
+  
+  <script src="/static/intro.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="/static/introjs.css" />
+
+<!-- Google Analystics code has been taken out by L. Rico 4 Nov '15 --> 
+  
+</head>
+<body class="application">
+
+
+  <div class="navbar navbar-inverse navbar-fixed-top" >
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" >MTM Bogie Dynamic Testing Dashboard by Luis Rico. Nov 2015
+			<a style="float:right" class="btn btn btn-success" href="javascript:void(0);" onclick="javascript:introJs().start();">Tutorial</a>
+		</a>
+
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            All Exceedences Counter
+          </div>
+		  
+          <div class="chart-stage">
+			<div id="line-chart" data-step='7' data-intro='Hover over the charts plots for tooltip context information.'>
+				<a href="javascript:lineChart.filterAll();rangeChart.filterAll();stackedBarChart.filterAll();dc.redrawAll();" data-step='2' data-intro='Click on the reset button to cancel the effect of a custom selection.'>reset</a>   <!-- stackedBarChart is including to solve a weird effect on the stacked chart -->
+			</div>
+			<div id="range-chart" data-step='1' data-intro='Use the range chart to select a different timeline by clicking within the chart area and drag the handlers that will appear. Handlers can be re-position whilst shown.'></div>
+          </div>
+		  
+          <div class="chart-notes">
+            Line chart
+          </div>
+        </div>
+      </div>
+	  
+	  <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Top Locations (Up to 10)
+          </div>
+          <div class="chart-stage">
+            <div id="row-chart" data-step='3' data-intro='Click on the chart bars to filter by location. Note that multiple selections can be made.'>
+				<a href="javascript:locationRowChart.filterAll();dc.redrawAll();">reset</a>
+			</div>
+          </div>
+          <div class="chart-notes">
+            Row chart
+          </div>
+        </div>
+      </div>
+	  
+      <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Route filter
+          </div>
+          <div class="chart-stage">
+            <div id="row-chart2" data-step='4' data-intro='Every chart can be used as a filter to select different visualizations.'>
+				
+			</div>
+          </div>
+          <div class="chart-notes">
+            Row chart
+          </div>
+        </div>
+      </div>
+	  
+	  <div class="dc-data-count" style="float: right;">
+				
+				<span data-step='5' data-intro='This counter is updated according to selections or filters applied across all charts. Note the reset button.'>  
+				<span class="filter-count"></span>
+				events out of
+				<span class="total-count"></span>
+				exceedences |
+					<a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
+				</span>
+				
+		</div>
+
+    </div>
+
+    <div class="row">
+
+     <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Analysis Type filter
+          </div>
+          <div class="chart-stage">
+            <div id="ring-chart2" data-step='4' data-intro='Every chart can be used as a filter to select different visualizations.'>
+				
+			</div>
+          </div>
+          <div class="chart-notes">
+            Ring chart
+          </div>
+        </div>
+      </div>
+	  
+	  <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Accelerometer Location filter
+          </div>
+          <div class="chart-stage">
+            <div id="ring-chart3" data-step='4' data-intro='Every chart can be used as a filter to select different visualizations.'>
+				
+			</div>
+          </div>
+          <div class="chart-notes">
+            Ring chart
+          </div>
+        </div>
+      </div>
+	  
+      
+	  
+	   <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Speed range filter
+          </div>
+          <div class="chart-stage">
+            <div id="ring-chart4" data-step='4' data-intro='Every chart can be used as a filter to select different visualizations.'>
+				
+			</div>
+          </div>
+          <div class="chart-notes">
+            Ring chart
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr>
+
+    
+
+  </div>
+
+  <script src="./static/queue.js"></script>
+  <script src='./static/chart3.js' type='text/javascript'></script>
+  
+  
+</body>
+
+</html>

@@ -20,10 +20,12 @@ FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket'
 
 
 ##DBS_NAME2 = 'experall'
-DBS_NAME2 = 'smallall'
+##DBS_NAME2 = 'smallall'
+##DBS_NAME2 = 'smallseries'
+DBS_NAME2 = 'smallseriesdays'
 FIELDS2 = {'Speed': True, 'Speed Bracket': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
-FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'id': True}
+FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'Series':True, 'Date':True, 'id': True}
 
 
 ## This works alongside @app.route("/MTMBogieMongo")
@@ -35,6 +37,18 @@ def index():
 @app.route("/2")
 def index2():
     return render_template("MTMdashboardMongoDBall.html")
+	
+## This works alongside @app.route("/experall") & chart3.js
+## DBS_NAME2 should be as 'smallseries'
+@app.route("/3")
+def index3():
+    return render_template("MTMdashboardMongoDBsmallscatter.html")
+	
+## This works alongside @app.route("/experall") & chart4.js
+## DBS_NAME2 should be as 'smallseriesdays'
+@app.route("/4")
+def index4():
+    return render_template("MTMdashboardMongoDBsmallscatterdays.html")
 
 
 @app.route("/MTMBogieMongo")
