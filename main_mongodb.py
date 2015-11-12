@@ -18,7 +18,7 @@ DBS_NAME = 'MTMbogie'
 COLLECTION_NAME = 'projects'
 FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
-
+##DBS_NAME2 = ''
 ##DBS_NAME2 = 'experall'
 ##DBS_NAME2 = 'smallall'
 ##DBS_NAME2 = 'smallseries'
@@ -42,12 +42,14 @@ def index2():
 ## DBS_NAME2 should be as 'smallseries'
 @app.route("/3")
 def index3():
+	
     return render_template("MTMdashboardMongoDBsmallscatter.html")
 	
 ## This works alongside @app.route("/experall") & chart4.js
 ## DBS_NAME2 should be as 'smallseriesdays'
 @app.route("/4")
 def index4():
+	##global DBS_NAME2 = 'smallseriesdays'
     return render_template("MTMdashboardMongoDBsmallscatterdays.html")
 
 
