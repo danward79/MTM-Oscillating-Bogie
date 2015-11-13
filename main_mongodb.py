@@ -22,7 +22,8 @@ FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket'
 ##DBS_NAME2 = 'experall'
 ##DBS_NAME2 = 'smallall'
 ##DBS_NAME2 = 'smallseries'
-DBS_NAME2 = 'smallseriesdays'
+##DBS_NAME2 = 'smallseriesdays'
+DBS_NAME2 = 'allIndays'
 FIELDS2 = {'Speed': True, 'Speed Bracket': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
 FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'Series':True, 'Date':True, 'id': True}
@@ -50,6 +51,12 @@ def index3():
 @app.route("/4")
 def index4():
 	##global DBS_NAME2 = 'smallseriesdays'
+    return render_template("MTMdashboardMongoDBsmallscatterdays.html")
+	
+## This works alongside @app.route("/experall") & chart4.js
+## DBS_NAME2 should be as 'allIndays'
+@app.route("/5")
+def index5():
     return render_template("MTMdashboardMongoDBsmallscatterdays.html")
 
 
