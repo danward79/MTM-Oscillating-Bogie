@@ -22,14 +22,18 @@ function makeGraphs(error, data) {
 
  //Date format needs to be parsed and and the same time, an aggregate field can be processed
 
+ console.log('Before Date, DateTime parsing');
 
  
-		var parseDate = d3.time.format("%d/%m/%Y H:M:S").parse;  // LHR this is a function expression
+		var parseDate1 = d3.time.format("%d/%m/%Y %X").parse;  // LHR this is a function expression
+		var parseDate2 = d3.time.format("%d").parse;  // LHR this is a function expression
 			data.forEach(function(d) {		// LHR d only exists whilst forEach is being executed.
-			d.Date_Time = parseDate(d.Date_Time);
-			d.Date=d.Date_Time.getDate();
+			d.Date=parseDate2(d.Date_Time);
+			d.Date_Time = parseDate1(d.Date_Time);
+			//console.log(d.Date);
 		});
-	
+
+console.log('After Date, DateTime parsing');
 		
 var ndx = crossfilter(data);
 
