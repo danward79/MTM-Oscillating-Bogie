@@ -24,12 +24,14 @@ FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket'
 ##DBS_NAME2 = 'smallseries'
 ##DBS_NAME2 = 'smallseriesdays'
 ##DBS_NAME2 = 'allIndays'
+##DBS_NAME2 = 'allIndaysCons'
 DBS_NAME2 = 'allIndaysCons2'
 FIELDS2 = {'Speed': True, 'Speed Bracket': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
 FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'Series':True, 'Date':True, 'id': True}
 
 FIELDS4 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Date_Time':True, 'Series':True, 'id': True}
+FIELDS5 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Series':True, 'Time': True, 'Run': True,'id': True}
 
 
 ## This works alongside @app.route("/MTMBogieMongo")
@@ -62,13 +64,21 @@ def index4():
 def index5():
     return render_template("MTMdashboardMongoDBsmallscatterdays.html")
 	
-## This works alongside @app.route("/experall") & chart4.js
+## This works alongside @app.route("/experall") & chart5.js
 ## DBS_NAME2 should be as 'allIndaysCons'
 ## FIELDS4 should be used
 @app.route("/6")
 def index6():
     return render_template("MTMdashboardMongoDBCons.html")
 
+	
+## This works alongside @app.route("/experall") & chart6.js
+## DBS_NAME2 should be as 'allIndaysCons2'
+## FIELDS5 should be used
+## Date_Time concept flawed. Run column created for filtering instead of date. Speed vs Time in Line Chart and series as per Series column
+@app.route("/7")
+def index7():
+    return render_template("MTMdashboardMongoDBCons2.html")
 
 @app.route("/MTMBogieMongo")
 def MTMBogieMongo():
@@ -87,7 +97,7 @@ def experall():
     connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
     collection = connection[DBS_NAME2][COLLECTION_NAME]
     ##projects = collection.find(projection=FIELDS2, limit=100000)
-    projects = collection.find(projection=FIELDS4)
+    projects = collection.find(projection=FIELDS5)
     json_projects = []
     for project in projects:
         json_projects.append(project)
