@@ -11,29 +11,16 @@ function makeGraphs(error, data) {
 				for (var i=0; i < max_length; i++) {
 					//data[i]["Value"] = parseFloat(data[i]["Value"]);
 					//data[i]["Frequency(Hz)"] = parseFloat(data[i]["Frequency(Hz)"]);
-					//data[i]["Time"] = parseFloat(data[i]["Time"]);
+					data[i]["Time"] = parseFloat(data[i]["Time"]);
 					data[i]["Speed"] = parseFloat(data[i]["Speed"]);
-					//data[i]["Series"] = parseFloat(data[i]["Series"]);
-					//data[i]["Date"]= new Date(data[i]["Date"]);
+					data[i]["Series"] = parseInt(data[i]["Series"]);
+					data[i]["Run"]= parseInt(data[i]["Run"]);
 					data[i]["Exceedence Instance"] = parseInt(data[i]["Exceedence Instance"]);
 				}
 		}
 		convert_2_int();
 
- //Date format needs to be parsed and and the same time, an aggregate field can be processed
-
- console.log('Before Date, DateTime parsing');
-
- 
-		var parseDate1 = d3.time.format("%d/%m/%Y %X").parse;  // LHR this is a function expression
-		var parseDate2 = d3.time.format("%d").parse;  // LHR this is a function expression
-			data.forEach(function(d) {		// LHR d only exists whilst forEach is being executed.
-			d.Date=parseDate2(d.Date_Time);
-			d.Date_Time = parseDate1(d.Date_Time);
-			//console.log(d.Date);
-		});
-
-console.log('After Date, DateTime parsing');
+ //Date parsing code has been removed from here
 		
 var ndx = crossfilter(data);
 
@@ -45,16 +32,15 @@ var all = ndx.groupAll();
 			.dimension(ndx)
 			.group(all);			
 
+console.log('Before Line Chart');
+			
 // Line chart code
 			
-		//var dateDim = ndx.dimension(function(d) {return d.Detection_Date;}); 	// Note that we are grouping by month to match CMT excel plots
-		var Date_TimeDim = ndx.dimension(function(d) {return [+d.Series, +d.Date_Time];});
-		//var timeDim = ndx.dimension(function(d) {return [+d.Series, +d.Time];});
+		var TimeDim = ndx.dimension(function(d) {return [+d.Series, +d.Time];});
+		var TimeDim2 = ndx.dimension(function(d) {return [+d.Speed, +d.Time];});
 		
-		//runDimension = ndx.dimension(function(d) {return [+d.Expt, +d.Run]; });
-		
-		var minDate_Time = Date_TimeDim.bottom(1)[0].Date_Time;
-		var maxDate_Time = Date_TimeDim.top(1)[0].Date_Time;
+		var minTime = TimeDim.bottom(1)[0].Time;
+		var maxTime = TimeDim.top(1)[0].Time;
 		
 		
 //		lineChart  = dc.lineChart("#line-chart");   // Note that 'var' has been removed in order to be able to reset chart
@@ -63,10 +49,24 @@ var all = ndx.groupAll();
 //		rangeChart = dc.barChart('#range-chart');	// Note that 'var' has been removed in order to be able to reset chart
 		
 		
-		var Date_TimeDimGroup = Date_TimeDim.group();
+		var TimeDimGroup = TimeDim.group();
 		
-		var SpeedGroup = Date_TimeDimGroup.reduceSum(function(d)
+		var SpeedGroup2 = TimeDimGroup.reduceSum(function(d)
 			{return d['Speed'];} );
+			
+			
+		var SpeedGroup3 = TimeDimGroup.reduce(
+            function (p, v) {
+                ++p.count;
+                return v.speed;
+            },
+            null,
+            function () {
+                return { count:0, speed: 0};
+            }
+        );
+		
+		var SpeedGroup = TimeDim2.group();
 			
 		// var tooltipDateFormat = d3.time.format("%a %e %b %Y");
 		var tooltipDateFormat = d3.time.format("%b %Y");	
@@ -90,7 +90,7 @@ var all = ndx.groupAll();
 		chart
 			.width(750).height(205)
 			.chart(subChart)
-			.x(d3.scale.linear().domain([minDate_Time, maxDate_Time]))
+			.x(d3.scale.linear().domain([minTime, maxTime]))
 			//.y(d3.scale.linear().domain([0, 7]))
 			.brushOn(false)
 			.yAxisLabel("Speed")
@@ -98,7 +98,7 @@ var all = ndx.groupAll();
 			.clipPadding(10)
 			//.elasticX(true)
 			.elasticY(true)
-			.dimension(Date_TimeDim)
+			.dimension(TimeDim2)
 			.group(SpeedGroup)
 			//.rangeChart(rangeChart)
 			//.mouseZoomable(true)
@@ -114,6 +114,8 @@ var all = ndx.groupAll();
 		  //chart.margins().left += 40;	 
 
 
+console.log('Before Row Chart');
+		  
 // Row chart code
 
 		locationRowChart = dc.rowChart("#row-chart");		// Note that 'var' has been removed in order to be able to reset chart
@@ -143,22 +145,23 @@ var all = ndx.groupAll();
 			})
 			.elasticX(true)
 			.xAxis().ticks(5);		  
-		  
+
+console.log('Before Ring Chart');		  
 		  
 // Ring chart 2 code
 			
-		dateRingChart   = dc.pieChart("#ring-chartDate");			// Note that 'var' has been removed in order to be able to reset chart
+		runRingChart   = dc.pieChart("#ring-chartDate");			// Note that 'var' has been removed in order to be able to reset chart
 		
-		DateDim = ndx.dimension(function(d) {return d['Date'];});
+		RunDim = ndx.dimension(function(d) {return d['Run'];});
 		
-		var speed_total = DateDim.group().reduceSum(function(d) {return d['Speed'];});
+		var speed_total = RunDim.group().reduceSum(function(d) {return d['Speed'];});
 
 		//var parseDateLabel = d3.time.format("%m").parse
 		
-		dateRingChart
+		runRingChart
 			.width(150)
 			.height(150)
-			.dimension(DateDim)
+			.dimension(RunDim)
 			.group(speed_total)
 			.innerRadius(30)
 			.label(function (d){
@@ -172,7 +175,8 @@ var all = ndx.groupAll();
 			//	return int(d.value) ;
 			//});
 		
-			
+console.log('After Ring Chart');
+		
 		function remove_empty_bins(source_group) {
 			return {
 				all:function () {
@@ -182,59 +186,19 @@ var all = ndx.groupAll();
 				}
 			};
 		}
-		
+
+console.log('In between functions');
+	
 		$('#ring-chartDate').on('click', function(){
-			var minDate_Time2 = Date_TimeDim.bottom(1)[0].Date_Time;
-			var maxDate_Time2 = Date_TimeDim.top(1)[0].Date_Time;
-			chart.x(d3.time.scale().domain([minDate_Time2,maxDate_Time2]));
+			var minTime2 = TimeDim.bottom(1)[0].Time;
+			var maxTime2 = TimeDim.top(1)[0].Time;
+			chart.x(d3.time.scale().domain([minTime2,maxTime2]));
 			chart.group(remove_empty_bins(SpeedGroup));
 			chart.redraw();
 
 		});
 		
-// Ring chart 2 code
-			
-		dateRingChart2   = dc.pieChart("#ring-chart2");			// Note that 'var' has been removed in order to be able to reset chart
-		
-		analysisDim = ndx.dimension(function(d) {return d['Analysis Type'];});
-		
-		var analysis_total = analysisDim.group().reduceSum(function(d) {return d['Exceedence Instance'];});
-
-		dateRingChart2
-			.width(150)
-			.height(150)
-			.dimension(analysisDim)
-			.group(analysis_total)
-			.innerRadius(30);
-// Ring chart 3 code
-			
-		dateRingChart3   = dc.pieChart("#ring-chart3");			// Note that 'var' has been removed in order to be able to reset chart
-		
-		accelerometerDim = ndx.dimension(function(d) {return d['Accelerometer Location'];});
-		
-		var accelerometer_total = accelerometerDim.group().reduceSum(function(d) {return d['Exceedence Instance'];});
-
-		dateRingChart3
-			.width(150)
-			.height(150)
-			.dimension(accelerometerDim)
-			.group(accelerometer_total)
-			.innerRadius(30);
-			
-// Ring chart 4 code
-			
-		speedRingChart   = dc.pieChart("#ring-chart4");			// Note that 'var' has been removed in order to be able to reset chart
-		
-		speedDim = ndx.dimension(function(d) {return d['Speed Bracket'];});
-		
-		var speed_total = speedDim.group().reduceSum(function(d) {return d['Exceedence Instance'];});
-
-		speedRingChart
-			.width(150)
-			.height(150)
-			.dimension(speedDim)
-			.group(speed_total)
-			.innerRadius(30);		
+	
 		
 		  
 		dc.renderAll();
