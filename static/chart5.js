@@ -24,10 +24,9 @@ function makeGraphs(error, data) {
 
 
  
-		var parseDate = d3.time.format("%d/%m/%Y").parse;  // LHR this is a function expression
+		var parseDate = d3.time.format("%d/%m/%Y H:M:S").parse;  // LHR this is a function expression
 			data.forEach(function(d) {		// LHR d only exists whilst forEach is being executed.
 			d.Date_Time = parseDate(d.Date_Time);
-			console.log(d.Date_Time);
 			d.Date=d.Date_Time.getDate();
 		});
 	
