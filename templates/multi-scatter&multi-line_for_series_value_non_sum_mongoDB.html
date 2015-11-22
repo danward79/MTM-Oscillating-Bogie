@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>dc.js - Scatter Plot Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/dc.css"/>
+</head>
+<body>
+
+<div id="test"></div>
+
+<script type="text/javascript" src="/static/d3.js"></script>
+<script type="text/javascript" src="/static/crossfilter.js"></script>
+<script type="text/javascript" src="/static/dc.js"></script>
+<script type="text/javascript">
+
+var chart = dc.compositeChart("#test");
+d3.csv("/static/AllWerribeeIn_Run_Red2.csv", function(error, experiments) {
+
+  experiments.forEach(function(x) {
+    x.Speed = +x.Speed;
+  });
+
+  var ndx                 = crossfilter(experiments),
+      scatterDimension    = ndx.dimension(function(d) { return [+d.Time, +d.Speed ]; }),
+      scatterGroup1        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 2; }),
+
+
+	  
+	  // LHR This is why we try runDimension & speedSumGroup in order to separate the series in the Expt feature
+	  // Success!!!!
+	  runDimension        = ndx.dimension(function(d) {return +d.Time;});
+	  
+	  speedSumGroup       = runDimension.group().reduce(function(p, v) {
+								  p[v.Series] = (p[v.Series] || 0) + v.Speed;
+								  return p;
+							  }, function(p, v) {
+								  p[v.Series] = (p[v.Series] || 0) - v.Speed;
+								  return p;
+							  }, function() {
+								  return {};
+							  });
+
+      function sel_stack(i) {
+              return function(d) {
+                  return d.value[i];
+              };
+          }
+
+    chart
+        .width(768)
+        .height(480)
+        .x(d3.scale.linear().domain([6,20]))
+        .yAxisLabel("This is the Y Axis!")
+        .clipPadding(10)
+		.brushOn(false)
+        .dimension(scatterDimension)
+        .legend(dc.legend().x(70).y(10).itemHeight(13).gap(5))
+        .compose([
+            dc.scatterPlot(chart)
+                .group(scatterGroup1, "Blue Group")
+                .colors("blue"),
+
+
+			dc.lineChart(chart)
+				//.renderDataPoints(true)
+				//.title(function(d) { return d.data.key + ": " + d.data.value; })
+				//.title(function(d) { return "Point : " + d.data.key ; })
+				.dimension(runDimension)
+				.group(speedSumGroup, "1", sel_stack('1')),
+        ]);
+
+  chart.render();
+});
+
+</script>
+
+</body>
+</html>

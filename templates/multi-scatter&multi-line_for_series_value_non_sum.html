@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>dc.js - Scatter Plot Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/dc.css"/>
+</head>
+<body>
+
+<div id="test"></div>
+
+<script type="text/javascript" src="/static/d3.js"></script>
+<script type="text/javascript" src="/static/crossfilter.js"></script>
+<script type="text/javascript" src="/static/dc.js"></script>
+<script type="text/javascript">
+
+var chart = dc.compositeChart("#test");
+d3.csv("/static/morley_blanks.csv", function(error, experiments) {
+
+  experiments.forEach(function(x) {
+    x.Speed = +x.Speed;
+  });
+
+  var ndx                 = crossfilter(experiments),
+      scatterDimension    = ndx.dimension(function(d) { return [+d.Run, +d.Speed ]; }),
+      scatterGroup1        = scatterDimension.group().reduceSum(function(d) { return +d.Expt === 1; }),
+	  scatterGroup2        = scatterDimension.group().reduceSum(function(d) { return +d.Expt === 2; }),
+      lineDimension       = ndx.dimension(function(d) { return +d.Run; }),
+      lineGroup           = lineDimension.group().reduceSum(function (d) {  // The problem we have here is that all Speeds across different series are sumed
+          return d.Speed * d.Run / 1000;
+      });
+	  
+	  // LHR This is why we try runDimension & speedSumGroup in order to separate the series in the Expt feature
+	  // Success!!!!
+	  runDimension        = ndx.dimension(function(d) {return +d.Run;});
+	  
+	  speedSumGroup       = runDimension.group().reduce(function(p, v) {
+								  p[v.Expt] = (p[v.Expt] || 0) + v.Speed;
+								  return p;
+							  }, function(p, v) {
+								  p[v.Expt] = (p[v.Expt] || 0) - v.Speed;
+								  return p;
+							  }, function() {
+								  return {};
+							  });
+
+      function sel_stack(i) {
+              return function(d) {
+                  return d.value[i];
+              };
+          }
+
+    chart
+        .width(768)
+        .height(480)
+        .x(d3.scale.linear().domain([6,20]))
+        .yAxisLabel("This is the Y Axis!")
+        .clipPadding(10)
+		.brushOn(false)
+        .dimension(scatterDimension)
+        .legend(dc.legend().x(70).y(10).itemHeight(13).gap(5))
+        .compose([
+            dc.scatterPlot(chart)
+                .group(scatterGroup1, "Blue Group")
+                .colors("blue"),
+            dc.scatterPlot(chart)
+                .group(scatterGroup2, "Red Group")
+                .colors("red"),
+            dc.lineChart(chart)
+                //.dimension(lineDimension)
+				//.renderDataPoints(true)
+				//.title(function(d) { return d.data.key + ": " + d.data.value; })
+				//.title(function(d) { return "Point : " + d.data.key ; })
+				.dimension(runDimension)
+                //.group(lineGroup, "Line Group")
+				.group(speedSumGroup, "3", sel_stack('3')),
+			dc.lineChart(chart)
+				//.renderDataPoints(true)
+				//.title(function(d) { return d.data.key + ": " + d.data.value; })
+				//.title(function(d) { return "Point : " + d.data.key ; })
+				.dimension(runDimension)
+				.group(speedSumGroup, "4", sel_stack('4')),
+        ]);
+
+  chart.render();
+});
+
+</script>
+
+</body>
+</html>

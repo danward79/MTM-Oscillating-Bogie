@@ -26,6 +26,8 @@ FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket'
 ##DBS_NAME2 = 'allIndays'
 ##DBS_NAME2 = 'allIndaysCons'
 DBS_NAME2 = 'allIndaysCons3'
+##DBS_NAME2 = 'allIndaysCons3Redu'
+##DBS_NAME2 = 'allIndaysCons3Redu2'
 FIELDS2 = {'Speed': True, 'Speed Bracket': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
 FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'Series':True, 'Date':True, 'id': True}
@@ -79,6 +81,26 @@ def index6():
 @app.route("/7")
 def index7():
     return render_template("MTMdashboardMongoDBCons2.html")
+
+	
+## This works alongside @app.route("/experall") & chart7.js
+## DBS_NAME2 should be as 'allIndaysCons3'
+## FIELDS5 should be used
+## Time based. Run column created for filtering instead of date. Speed vs Time in Line Chart and series as per Series column
+@app.route("/8")
+def index8():
+    ##return render_template("MTMdashboardTimeRun_Temp.html")
+	return render_template("MTMdashboardTimeRun.html")
+	
+	
+@app.route("/g")
+def indexg():
+    return render_template("multi-scatter&multi-line_for_series_value_non_sum.html")
+
+@app.route("/g2")
+def indexg2():
+    return render_template("multi-scatter&multi-line_for_series_value_non_sum_mongoDB.html")
+
 
 @app.route("/MTMBogieMongo")
 def MTMBogieMongo():
