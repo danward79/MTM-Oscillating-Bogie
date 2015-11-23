@@ -43,37 +43,15 @@ console.log('Before Line Chart');
 
       scatterDimension    = ndx.dimension(function(d) { return [+d.Time, +d.Speed ]; }),
       scatterGroup1        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 1; }),
-	  scatterGroup2        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 2; }),
-  
-	// Code for Dimension that can separate Series for Line Chart
-	  timeDimension        = ndx.dimension(function(d) {return +d.Time;});
-	  
-	  speedSumGroup       = timeDimension.group().reduce(function(p, v) {
-								  p[v.Series] = (p[v.Series] || 0) + v.Speed;
-								  return p;
-							  }, function(p, v) {
-								  p[v.Series] = (p[v.Series] || 0) - v.Speed;
-								  return p;
-							  }, function() {
-								  return {};
-							  });
+	  scatterGroup2        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 2; });
 
-      function sel_stack(i) {
-              return function(d) {
-                  return d.value[i];
-              };
-          }
-
+	  timeDimension = ndx.dimension(function(d) { return +d.Time; });   // This dimension is needed otherwise maxTime cannot be properly determined
 			
 // Line chart code
-			
-		
+				
 		var minTime = timeDimension.bottom(1)[0].Time;
 		var maxTime = timeDimension.top(1)[0].Time;
 		
-
-
-			
 		// var tooltipDateFormat = d3.time.format("%a %e %b %Y");
 		var tooltipDateFormat = d3.time.format("%b %Y");	
 			
@@ -89,7 +67,7 @@ var chart = dc.compositeChart("#line-chart");
 			.yAxisLabel("Speed")
 			//.xAxisLabel("Time")
 			.clipPadding(10)
-			.brushOn(false)
+			//.brushOn(true)
 			.elasticY(true)
 			.dimension(scatterDimension)
 			.legend(dc.legend().x(625).y(5).itemHeight(13).gap(5))
@@ -102,6 +80,13 @@ var chart = dc.compositeChart("#line-chart");
                 .colors("red"),
 			]);		  
 
+			
+			$('#exper_button').on('click', function(){
+				var minTime2 = timeDimension.bottom(1)[0].Time/2;
+				var maxTime2 = timeDimension.top(1)[0].Time/2;
+				chart.x(d3.scale.linear().domain([minTime2, maxTime2]));
+				dc.redrawAll();
+			});
 		  
 
 console.log('Before Row Chart');
