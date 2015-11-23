@@ -53,11 +53,8 @@
           </div>
 		  
           <div class="chart-stage">
-			<div id="line-chart" data-step='7' data-intro='Hover over the charts plots for tooltip context information.'>
-				<a href="javascript:lineChart.filterAll();rangeChart.filterAll();stackedBarChart.filterAll();dc.redrawAll();" data-step='2' data-intro='Click on the reset button to cancel the effect of a custom selection.'>reset</a>   <!-- stackedBarChart is including to solve a weird effect on the stacked chart -->
-			</div>
-			<div id="range-chart" data-step='1' data-intro='Use the range chart to select a different timeline by clicking within the chart area and drag the handlers that will appear. Handlers can be re-position whilst shown.'></div>
-          </div>
+			<div id="line-chart"></div>
+		  </div>
 		  
           <div class="chart-notes">
             Line chart
@@ -71,8 +68,8 @@
             Top Locations (Up to 10)
           </div>
           <div class="chart-stage">
-            <div id="row-chart" data-step='3' data-intro='Click on the chart bars to filter by location. Note that multiple selections can be made.'>
-				<a href="javascript:locationRowChart.filterAll();dc.redrawAll();">reset</a>
+            <div id="row-chart">
+				
 			</div>
           </div>
           <div class="chart-notes">
@@ -87,7 +84,7 @@
             Run filter
           </div>
           <div class="chart-stage">
-            <div id="ring-RunChart" data-step='4' data-intro='Every chart can be used as a filter to select different visualizations.'>
+            <div id="ring-RunChart" >
 				
 			</div>
           </div>
@@ -97,12 +94,14 @@
         </div>
       </div>
 	  
+	  
+	  <button type="button" onclick="javascript:AccLocationDim.filterAll();AccLocationDim.filter(function (d) { return d === 'Bogie 1' || d === 'Bogie 2'; });dc.redrawAll();">Exceedences only</button>
+	  
 	  <div class="dc-data-count" style="float: right;">
-				
-				<span data-step='5' data-intro='This counter is updated according to selections or filters applied across all charts. Note the reset button.'>  
+			
+				<span >  
 				<span class="filter-count"></span>
-				events out of
-				<span class="total-count"></span>
+				events out of 1724
 				exceedences |
 					<a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
 				</span>
@@ -119,7 +118,7 @@
             Analysis Type filter
           </div>
           <div class="chart-stage">
-            <div id="AnalisysChart" data-step='4' data-intro='Every chart can be used as a filter to select different visualizations.'>
+            <div id="AnalisysChart" >
 				
 			</div>
           </div>
@@ -135,7 +134,7 @@
             Accelerometer Location filter
           </div>
           <div class="chart-stage">
-            <div id="AccLocationChart">
+            <div id="accLocationChart">
 			</div>
           </div>
           <div class="chart-notes">
@@ -152,7 +151,7 @@
             Speed range filter
           </div>
           <div class="chart-stage">
-            <div id="speedBracketChart" data-step='4' data-intro='Every chart can be used as a filter to select different visualizations.'>
+            <div id="speedBracketChart" >
 				
 			</div>
           </div>

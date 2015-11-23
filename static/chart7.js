@@ -181,7 +181,7 @@ console.log('Before Ring Chart');
 			
 // Accelerometer Location chart code
 	
-		AccLocationChart   = dc.rowChart("#AccLocationChart");			// Note that 'var' has been removed in order to be able to reset chart
+		AccLocationChart   = dc.rowChart("#accLocationChart");			// Note that 'var' has been removed in order to be able to reset chart
 		
 		AccLocationDim = ndx.dimension(function(d) {return d['Accelerometer Location'];});
 		
