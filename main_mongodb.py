@@ -25,9 +25,10 @@ FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket'
 ##DBS_NAME2 = 'smallseriesdays'
 ##DBS_NAME2 = 'allIndays'
 ##DBS_NAME2 = 'allIndaysCons'
-DBS_NAME2 = 'allIndaysCons3'
+##DBS_NAME2 = 'allIndaysCons3'
 ##DBS_NAME2 = 'allIndaysCons3Redu'
 ##DBS_NAME2 = 'allIndaysCons3Redu2'
+DBS_NAME2 = 'allIndaysCons4'
 FIELDS2 = {'Speed': True, 'Speed Bracket': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
 FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'Series':True, 'Date':True, 'id': True}
@@ -90,6 +91,14 @@ def index7():
 @app.route("/8")
 def index8():
     ##return render_template("MTMdashboardTimeRun_Temp.html")
+	return render_template("MTMdashboardTimeRun.html")
+	
+## This works alongside @app.route("/experall") & chart7.js
+## DBS_NAME2 should be as 'allIndaysCons4'
+## FIELDS5 should be used
+## All widgets in. Database populate with "Normal Data" for blanks in Analysis Type, Accelerometer Location & Speed Bracket.
+@app.route("/9")
+def index9():
 	return render_template("MTMdashboardTimeRun.html")
 	
 	

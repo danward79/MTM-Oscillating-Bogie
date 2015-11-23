@@ -92,13 +92,13 @@ var chart = dc.compositeChart("#line-chart");
 			.brushOn(false)
 			.elasticY(true)
 			.dimension(scatterDimension)
-			.legend(dc.legend().x(70).y(10).itemHeight(13).gap(5))
+			.legend(dc.legend().x(625).y(5).itemHeight(13).gap(5))
 			.compose([
 				dc.scatterPlot(chart)
-                .group(scatterGroup1, "Blue Group")
+                .group(scatterGroup1, "Normal Data")
                 .colors("blue"),
 				dc.scatterPlot(chart)
-                .group(scatterGroup2, "Red Group")
+                .group(scatterGroup2, "Exceedences")
                 .colors("red"),
 			]);		  
 
@@ -138,34 +138,89 @@ console.log('Before Row Chart');
 
 console.log('Before Ring Chart');		  
 		  
-// Ring chart 2 code
+// Ring Run chart code
 			
-		runRingChart   = dc.pieChart("#ring-chartDate");			// Note that 'var' has been removed in order to be able to reset chart
+		runRingChart   = dc.pieChart("#ring-RunChart");			// Note that 'var' has been removed in order to be able to reset chart
 		
 		RunDim = ndx.dimension(function(d) {return d['Run'];});
 		
-		var speed_total = RunDim.group().reduceSum(function(d) {return d['Speed'];});
-
-		//var parseDateLabel = d3.time.format("%m").parse
+		var RunGroup = RunDim.group();
 		
 		runRingChart
 			.width(150)
 			.height(150)
 			.dimension(RunDim)
-			.group(speed_total)
+			.group(RunGroup)
 			.innerRadius(30)
 			.label(function (d){
-				//console.log(d.key)
-				//return parseDateLabel(d.key);
 				return d.key;
 			})
 			.renderLabel(true)
 			.renderTitle(true);
-			//.title(function (d){
-			//	return int(d.value) ;
-			//});
+			
+// Analysis chart code
+	
+		AnalysisChart   = dc.rowChart("#AnalisysChart");			// Note that 'var' has been removed in order to be able to reset chart
 		
+		AnalysisDim = ndx.dimension(function(d) {return d['Analysis Type'];});
+		
+		var AnalysisGroup = AnalysisDim.group();
+		
+		AnalysisChart
+			.width(280)
+			.height(300)
+			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.dimension(AnalysisDim)
+			.group(AnalysisGroup)
+			.ordering(function(d) {return -d.value})		
+			.title(function (d) {
+				return d.value;
+			})
+			.elasticX(true)
+			.xAxis().ticks(5);
+			
+// Accelerometer Location chart code
+	
+		AccLocationChart   = dc.rowChart("#AccLocationChart");			// Note that 'var' has been removed in order to be able to reset chart
+		
+		AccLocationDim = ndx.dimension(function(d) {return d['Accelerometer Location'];});
+		
+		var AccLocationGroup = AccLocationDim.group();
+		
+		AccLocationChart
+			.width(280)
+			.height(300)
+			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.dimension(AccLocationDim)
+			.group(AccLocationGroup)
+			.ordering(function(d) {return -d.value})		
+			.title(function (d) {
+				return d.value;
+			})
+			.elasticX(true)
+			.xAxis().ticks(5);	
 
+			
+// Ring chart 4 code
+			
+		SpeedBracketChart   = dc.rowChart("#speedBracketChart");			// Note that 'var' has been removed in order to be able to reset chart
+		
+		SpeedBracketDim = ndx.dimension(function(d) {return d['Speed Bracket'];});
+		
+		var SpeedBracketGroup = SpeedBracketDim.group();
+
+		SpeedBracketChart
+			.width(280)
+			.height(300)
+			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.dimension(SpeedBracketDim)
+			.group(SpeedBracketGroup)
+			.ordering(function(d) {return -d.value})		
+			.title(function (d) {
+				return d.value;
+			})
+			.elasticX(true)
+			.xAxis().ticks(5);	
 		
 	
 		
