@@ -28,13 +28,14 @@ FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket'
 ##DBS_NAME2 = 'allIndaysCons3'
 ##DBS_NAME2 = 'allIndaysCons3Redu'
 ##DBS_NAME2 = 'allIndaysCons3Redu2'
-DBS_NAME2 = 'allIndaysCons4'
+##DBS_NAME2 = 'allIndaysCons4'
+DBS_NAME2 = 'AllWerribeeIn4Mongodb'
 FIELDS2 = {'Speed': True, 'Speed Bracket': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
 FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'Series':True, 'Date':True, 'id': True}
 
 FIELDS4 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Date_Time':True, 'Series':True, 'id': True}
-FIELDS5 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Series':True, 'Time': True, 'Run': True,'id': True}
+FIELDS5 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Series':True, 'Time': True, 'Run': True,}
 
 
 ## This works alongside @app.route("/MTMBogieMongo")
@@ -99,6 +100,22 @@ def index8():
 ## All widgets in. Database populate with "Normal Data" for blanks in Analysis Type, Accelerometer Location & Speed Bracket.
 @app.route("/9")
 def index9():
+	return render_template("MTMdashboardTimeRun.html")
+	
+	
+## #############################################
+##                                            ##
+##  This is the version for MTM presentation  ##
+##                                            ##
+##                                            ##
+## #############################################
+## This works alongside @app.route("/experall") & chart7.js
+## DBS_NAME2 should be as 'AllWerribeeIn4Mongodb' which came from csv with same name
+## DBS_NAME2 was prepared using ipython script: Single_data_file_for_dashboard_acceleration_exceedences-Werribee-2.ipynb in dropbox (note that manual customization was also done)
+## FIELDS5 should be used
+## All widgets in. Database populate with "GPS" for blanks in Analysis Type, Accelerometer Location & Speed Bracket.
+@app.route("/MTMBogie")
+def MTMBogie():
 	return render_template("MTMdashboardTimeRun.html")
 	
 	

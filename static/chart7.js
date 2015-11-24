@@ -11,8 +11,6 @@ function makeGraphs(error, data) {
 		var convert_2_int = function() {
 			var max_length = data.length; 
 				for (var i=0; i < max_length; i++) {
-					//data[i]["Value"] = parseFloat(data[i]["Value"]);
-					//data[i]["Frequency(Hz)"] = parseFloat(data[i]["Frequency(Hz)"]);
 					data[i]["Time"] = parseFloat(data[i]["Time"]);
 					data[i]["Speed"] = parseFloat(data[i]["Speed"]);
 					data[i]["Series"] = parseInt(data[i]["Series"]);
@@ -23,22 +21,15 @@ function makeGraphs(error, data) {
 		convert_2_int();
 
  //Date parsing code has been removed from here
-
-  data.forEach(function(x) {
-    x.Speed = +x.Speed;
-  });
  
 var ndx = crossfilter(data);
 
-
 var all = ndx.groupAll();
 
-// count all the detections
+// count all the data rows. Note that exceedences only can not be counted
 		dc.dataCount(".dc-data-count")
 			.dimension(ndx)
-			.group(all);			
-
-console.log('Before Line Chart');
+			.group(all);		
 
 
       scatterDimension    = ndx.dimension(function(d) { return [+d.Time, +d.Speed ]; }),
@@ -46,36 +37,14 @@ console.log('Before Line Chart');
 	  scatterGroup2        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 2; }),
   
 	// Code for Dimension that can separate Series for Line Chart
-	  timeDimension        = ndx.dimension(function(d) {return +d.Time;});
+	  timeDimension        = ndx.dimension(function(d) {return +d.Time;});  // This dimension is needed for minTime and maxTime as scatterDimension is not working
 	  
-	  speedSumGroup       = timeDimension.group().reduce(function(p, v) {
-								  p[v.Series] = (p[v.Series] || 0) + v.Speed;
-								  return p;
-							  }, function(p, v) {
-								  p[v.Series] = (p[v.Series] || 0) - v.Speed;
-								  return p;
-							  }, function() {
-								  return {};
-							  });
-
-      function sel_stack(i) {
-              return function(d) {
-                  return d.value[i];
-              };
-          }
 
 			
-// Line chart code
+// Composite chart code
 			
-		
 		var minTime = timeDimension.bottom(1)[0].Time;
 		var maxTime = timeDimension.top(1)[0].Time;
-		
-
-
-			
-		// var tooltipDateFormat = d3.time.format("%a %e %b %Y");
-		var tooltipDateFormat = d3.time.format("%b %Y");	
 			
 			
 var chart = dc.compositeChart("#line-chart");
@@ -83,11 +52,11 @@ var chart = dc.compositeChart("#line-chart");
 
 		chart
 			.width(750)
-			.height(205)
+			.height(300)
 			//.elasticX(true)
 			.x(d3.scale.linear().domain([minTime, maxTime]))
 			.yAxisLabel("Speed")
-			//.xAxisLabel("Time")
+			.xAxisLabel("Time")
 			.clipPadding(10)
 			.brushOn(false)
 			.elasticY(true)
@@ -102,9 +71,6 @@ var chart = dc.compositeChart("#line-chart");
                 .colors("red"),
 			]);		  
 
-		  
-
-console.log('Before Row Chart');
 		  
 // Row chart code
 
@@ -135,8 +101,7 @@ console.log('Before Row Chart');
 			})
 			.elasticX(true)
 			.xAxis().ticks(5);		  
-
-console.log('Before Ring Chart');		  
+	  
 		  
 // Ring Run chart code
 			
@@ -222,7 +187,6 @@ console.log('Before Ring Chart');
 			.elasticX(true)
 			.xAxis().ticks(5);	
 		
-	
 		
 		  
 		dc.renderAll();
