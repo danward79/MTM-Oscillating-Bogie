@@ -40,45 +40,51 @@ var all = ndx.groupAll();
 
 console.log('Before Line Chart');
 
-
-      scatterDimension    = ndx.dimension(function(d) { return [+d.Time, +d.Speed ]; }),
-      scatterGroup1        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 1; }),
-	  scatterGroup2        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 2; });
-
-	  timeDimension = ndx.dimension(function(d) { return +d.Time; });   // This dimension is needed otherwise maxTime cannot be properly determined
-			
-// Line chart code
-				
-		var minTime = timeDimension.bottom(1)[0].Time;
-		var maxTime = timeDimension.top(1)[0].Time;
 		
 		// var tooltipDateFormat = d3.time.format("%a %e %b %Y");
 		var tooltipDateFormat = d3.time.format("%b %Y");	
-			
-			
-var chart = dc.compositeChart("#line-chart");
-		
 
-		chart
+
+// Code for series Chart
+var chart = dc.seriesChart("#line-chart");
+
+		runDimension = ndx.dimension(function(d) {return [+d.Series, +d.Time]; });
+		runGroup = runDimension.group().reduceSum(function(d) { return +d.Speed; });
+		
+		
+       timeDimension = ndx.dimension(function(d) { return +d.Time; });   // This dimension is needed otherwise maxTime cannot be properly determined
+	
+		var minTime = timeDimension.bottom(1)[0].Time;
+		var maxTime = timeDimension.top(1)[0].Time;
+
+		  var symbolScale = d3.scale.ordinal().range(d3.svg.symbolTypes);
+		  var symbolAccessor = function(d) { return symbolScale(d.key[0]); };
+		  var subChart = function(c) {
+			return dc.scatterPlot(c)
+				.symbol(symbolAccessor)
+				.symbolSize(4)
+				.highlightedSize(10)
+		  };
+
+		  chart
 			.width(750)
 			.height(205)
-			//.elasticX(true)
+			.chart(subChart)
 			.x(d3.scale.linear().domain([minTime, maxTime]))
+			.brushOn(false)
 			.yAxisLabel("Speed")
-			//.xAxisLabel("Time")
+			.xAxisLabel("Time")
 			.clipPadding(10)
-			//.brushOn(true)
 			.elasticY(true)
-			.dimension(scatterDimension)
-			.legend(dc.legend().x(625).y(5).itemHeight(13).gap(5))
-			.compose([
-				dc.scatterPlot(chart)
-                .group(scatterGroup1, "Normal Data")
-                .colors("blue"),
-				dc.scatterPlot(chart)
-                .group(scatterGroup2, "Exceedences")
-                .colors("red"),
-			]);		  
+			.dimension(runDimension)
+			.group(runGroup)
+			.mouseZoomable(true)
+			.seriesAccessor(function(d) {return "Series: " + d.key[0];})
+			.keyAccessor(function(d) {return +d.key[1];})
+			.valueAccessor(function(d) {return +d.value;})
+			.legend(dc.legend().x(600).y(0).itemHeight(13).gap(5).horizontal(1).legendWidth(140).itemWidth(70));
+		  //chart.yAxis().tickFormat(function(d) {return d3.format(',d')(d+299500);});
+		  chart.margins().left += 40;
 
 			
 			$('#exper_button').on('click', function(){
