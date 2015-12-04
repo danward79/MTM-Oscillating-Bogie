@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 from pymongo import MongoClient
+##from pymongo import Connection
 import json
 from bson import json_util
 from bson.json_util import dumps
@@ -12,9 +13,11 @@ from bson.json_util import dumps
 
 app = Flask(__name__)
 
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-DBS_NAME = 'MTMbogie'
+MONGODB_HOST = 'ds041583.mongolab.com'
+MONGODB_PORT = 41583
+DBS_NAME = 'mtm'
+USER = 'lhr'
+PASS = 'ferrari1'
 COLLECTION_NAME = 'projects'
 FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
@@ -29,7 +32,7 @@ FIELDS = {'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket'
 ##DBS_NAME2 = 'allIndaysCons3Redu'
 ##DBS_NAME2 = 'allIndaysCons3Redu2'
 ##DBS_NAME2 = 'allIndaysCons4'
-DBS_NAME2 = 'AllWerribeeIn4Mongodb'
+##DBS_NAME2 = 'AllWerribeeIn4Mongodb'
 FIELDS2 = {'Speed': True, 'Speed Bracket': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, '_id': False}
 
 FIELDS3 = {'Speed': True, 'Analysis Type': True, 'Accelerometer Location': True, 'Speed Bracket': True, 'Route': True, 'Nearest Station': True, 'Exceedence Instance': True, 'Time':True, 'Series':True, 'Date':True, 'id': True}
@@ -143,7 +146,8 @@ def MTMBogieMongo():
 @app.route("/experall")
 def experall():
     connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    collection = connection[DBS_NAME2][COLLECTION_NAME]
+    collection = connection[DBS_NAME][COLLECTION_NAME]
+    collection.the_database.authenticate(USER, PASS, mechanism='SCRAM-SHA-1')
     ##projects = collection.find(projection=FIELDS2, limit=100000)
     projects = collection.find(projection=FIELDS5)
     json_projects = []
