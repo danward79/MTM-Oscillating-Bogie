@@ -145,16 +145,19 @@ def MTMBogieMongo():
 	
 @app.route("/experall")
 def experall():
-    connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    collection = connection[DBS_NAME][COLLECTION_NAME]
-    collection.the_database.authenticate(USER, PASS, mechanism='SCRAM-SHA-1')
-    ##projects = collection.find(projection=FIELDS2, limit=100000)
+    ##connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+    ##collection = connection[DBS_NAME][COLLECTION_NAME]
+    ##collection.the_database.authenticate(USER, PASS, mechanism='SCRAM-SHA-1')
+    mongoDBClient = MongoClient(MONGODB_HOST, MONGODB_PORT)
+    mongoDB = mongoDBClient[DBS_NAME]
+    mongoDB.authenticate(USER, PASS)
+    collection = mongoDBClient[DBS_NAME][COLLECTION_NAME]
     projects = collection.find(projection=FIELDS5)
     json_projects = []
     for project in projects:
         json_projects.append(project)
     json_projects = json.dumps(json_projects, default=json_util.default)
-    connection.close()
+    mongoDBClient.close()
     return json_projects
 
 if __name__ == "__main__":
