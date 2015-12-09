@@ -190,6 +190,27 @@ var chart = dc.compositeChart("#line-chart");
 		
 		  
 		dc.renderAll();
+		
+		
+// DropDown list code
+		
+	d3.select('#myDropDown').on('change', function(){ 
+		console.log(this.value);
+		
+		var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+		if (this.value==1) {
+			window.open("/static/Werribee_Route_4_th_6.html", "Route 4th - 6", strWindowFeatures);
+		};
+		if (this.value==2) {
+			window.open("/static/Werribee_Route_23rd_7.html", "Route 23rd - 7", strWindowFeatures);
+		};
+		if (this.value==3) {
+			window.open("/static/Werribee_Route_29th_5.html", "Route 29th - 5", strWindowFeatures);
+		};
+		if (this.value==4) {
+			window.open("/static/Werribee_Route_29th_7.html", "Route 29th - 7", strWindowFeatures);
+		};
+	});
 };
 	
 	
