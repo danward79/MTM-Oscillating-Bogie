@@ -31,7 +31,15 @@ var all = ndx.groupAll();
 
       scatterDimension    = ndx.dimension(function(d) { return [+d.Time, +d.Speed ]; }),
       scatterGroup1        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 1; }),
-	  scatterGroup2        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 2; }),
+	  scatterGroup2        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 2; });
+	  
+	  var reducer = reductio()
+		.exception(function(d) {return d.Series; });
+		
+	  reducer(scatterGroup1);
+	  
+	  alert(scatterGroup1.top(Infinity));
+	  alert(scatterGroup1.value());
   
 	// Code for Dimension that can separate Series for Line Chart
 	  timeDimension        = ndx.dimension(function(d) {return +d.Time;});  // This dimension is needed for minTime and maxTime as scatterDimension is not working
