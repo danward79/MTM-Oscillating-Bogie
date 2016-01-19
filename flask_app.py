@@ -121,6 +121,10 @@ def index9():
 def MTMBogie():
 	return render_template("MTMdashboardTimeRun.html")
 	
+@app.route("/MTMBogieFilterCounts")
+def MTMBogieFilterCounts():
+	return render_template("MTMdashboardFilterCounts.html")
+	
 	
 @app.route("/g")
 def indexg():
