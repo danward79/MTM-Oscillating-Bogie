@@ -160,8 +160,8 @@ var chart = dc.compositeChart("#line-chart");
 				return d.value;
 			})
 			.elasticX(true)
-			.xAxis().ticks(5);	
-
+			.xAxis().ticks(5);
+			
 			
 // Ring chart 4 code
 			
@@ -187,6 +187,11 @@ var chart = dc.compositeChart("#line-chart");
 		
 		  
 		dc.renderAll();
+		
+		
+		Exceedences1 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');  // Chrome inspect element copy selector
+		Exceedences2 = document.querySelector('#accLocationChart > svg > g > g.row._2 > title');
+		alert(Exceedences1.__data__.value + Exceedences2.__data__.value);
 		
 		
 // DropDown list code
