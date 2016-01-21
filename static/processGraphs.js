@@ -23,11 +23,6 @@ var ndx = crossfilter(data);
 
 var all = ndx.groupAll();
 
-// count all the data rows. Note that exceedences only can not be counted
-		dc.dataCount(".dc-data-count")
-			.dimension(ndx)
-			.group(all);		
-
 
       scatterDimension    = ndx.dimension(function(d) { return [+d.Time, +d.Speed ]; }),
       scatterGroup1        = scatterDimension.group().reduceSum(function(d) { return +d.Series === 1; }),
