@@ -73,31 +73,21 @@ var chart = dc.compositeChart("#line-chart");
 
 		locationRowChart = dc.rowChart("#row-chart");		// Note that 'var' has been removed in order to be able to reset chart
 		var locationDimension = ndx.dimension(function(d) {return d["Nearest Station"];});
-		var locationGroup = locationDimension.group();
-		
-		locationGroupRow = locationGroup.reduceSum(function(d) {return d['Exceedence Instance'];});
-
-		var filtered_group = filter_top(locationGroupRow);
-		function filter_top(locationGroupRow) {
-		  return {
-			all:function () {
-				return locationGroupRow.top(10);
-				}
-			}
-		 }
+		var locationGroup = locationDimension.group().reduceSum(function(d) {return d['Exceedence Instance'] == 1;});
 			
 	    locationRowChart
 			.width(280)
 			.height(300)
 			.margins({top: 20, left: 10, right: 10, bottom: 20})
 			.dimension(locationDimension)
-			.group(filtered_group)
+			.group(locationGroup)
 			.ordering(function(d) {return -d.value})
 			.title(function (d) {
 				return d.value;
 			})
 			.elasticX(true)
 			.xAxis().ticks(5);		  
+		
 	  
 		  
 // Ring Run chart code
@@ -191,7 +181,33 @@ var chart = dc.compositeChart("#line-chart");
 		
 		Exceedences1 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');  // Chrome inspect element copy selector
 		Exceedences2 = document.querySelector('#accLocationChart > svg > g > g.row._2 > title');
-		alert(Exceedences1.__data__.value + Exceedences2.__data__.value);
+		TotalExceedencesStatic = Exceedences1.__data__.value + Exceedences2.__data__.value;
+		document.getElementById("myTotalExceedences").innerHTML = TotalExceedencesStatic;
+		document.getElementById("myExceedencesCounter").innerHTML = TotalExceedencesStatic;  // However this will be updated postRedrawing of charts
+		
+		
+		function reCountExceedences () {
+				
+				Exceed_recount1 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');
+				Exceed_recount2 = document.querySelector('#accLocationChart > svg > g > g.row._2 > title');
+				Total_Exc_reCount1 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value;
+
+				Exceed_recount1 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._0 > title');
+				Exceed_recount2 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._1 > title');
+				Exceed_recount3 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._2 > title');
+				Exceed_recount4 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._3 > title');
+				Total_Exc_reCount2 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value + Exceed_recount3.__data__.value + Exceed_recount4.__data__.value;
+				
+				if (document.getElementById("myExceedencesCounter").innerHTML == Total_Exc_reCount1) {
+					document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount2;
+				} else {
+					document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount1;
+				};
+		};
+	
+		runRingChart.on("postRedraw", function(){
+			reCountExceedences();
+		});
 		
 		
 // DropDown list code
