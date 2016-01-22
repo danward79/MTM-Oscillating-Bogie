@@ -1,13 +1,9 @@
 from flask import Flask
 from flask import render_template
 from pymongo import MongoClient
-##from pymongo import Connection
 import json
 from bson import json_util
 from bson.json_util import dumps
-
-## Tutorial can be found in
-## http://adilmoujahid.com/posts/2015/01/interactive-data-visualization-d3-dc-python-mongodb/
 
 app = Flask(__name__)
 
@@ -21,26 +17,21 @@ COLLECTION_NAME = 'projects'
 	
 ## #############################################
 ##                                            ##
-##  This is the version for MTM presentation  ##
-##                                            ##
-##                                            ##
+##  This is the version for MTM cloud         ##
+##  It is an improvement over the presentation##
+##  given to them                             ##
+##  Deployed to cloud 22 January 2016         ##
 ## #############################################
-## This works alongside @app.route("/experall") & chart7.js
-## DBS_NAME2 should be as 'AllWerribeeIn4Mongodb' which came from csv with same name
-## DBS_NAME2 was prepared using ipython script: Single_data_file_for_dashboard_acceleration_exceedences-Werribee-2.ipynb in dropbox (note that manual customization was also done)
-## FIELDS5 should be used
-## All widgets in. Database populate with "GPS" for blanks in Analysis Type, Accelerometer Location & Speed Bracket.
-@app.route("/MTMBogie")
-def MTMBogie():
-	return render_template("MTMdashboardTimeRun.html")
 
-@app.route("/MTMBogie/local")
-def MTMBogieLocal():
+@app.route("/MTMDashboard")
+def MTMCloud():
+	return render_template("MTMdashboard2Dbs.html", mode='cloud')
+
+@app.route("/MTMDashboard/local")
+def MTMLocal():
 	return render_template("MTMdashboard2Dbs.html", mode='local')
 
-@app.route("/MTMBogie/cloud")
-def MTMBogieCloud():
-	return render_template("MTMdashboard2Dbs.html", mode='cloud')
+
 	
 	
 @app.route("/connect2MongoDbCloud")

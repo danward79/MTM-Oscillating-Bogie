@@ -47,8 +47,8 @@ var chart = dc.compositeChart("#line-chart");
 			.height(300)
 			//.elasticX(true)
 			.x(d3.scale.linear().domain([minTime, maxTime]))
-			.yAxisLabel("Speed")
-			.xAxisLabel("Time")
+			.yAxisLabel("Speed (km/h)")
+			.xAxisLabel("Time (s)")
 			.clipPadding(10)
 			.brushOn(false)
 			.elasticY(true)
@@ -56,7 +56,7 @@ var chart = dc.compositeChart("#line-chart");
 			.legend(dc.legend().x(625).y(5).itemHeight(13).gap(5))
 			.compose([
 				dc.scatterPlot(chart)
-                .group(scatterGroup1, "Normal Data")
+                .group(scatterGroup1, "GPS Data")
                 .colors("blue"),
 				dc.scatterPlot(chart)
                 .group(scatterGroup2, "Exceedences")
@@ -73,7 +73,7 @@ var chart = dc.compositeChart("#line-chart");
 	    locationRowChart
 			.width(280)
 			.height(300)
-			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.margins({top: 20, left: 10, right: 10, bottom: 25})
 			.dimension(locationDimension)
 			.group(locationGroup)
 			.ordering(function(d) {return -d.value})
@@ -81,7 +81,9 @@ var chart = dc.compositeChart("#line-chart");
 				return d.value;
 			})
 			.elasticX(true)
-			.xAxis().ticks(5);		  
+			.xAxis().ticks(5);
+
+		
 		
 	  
 		  
@@ -116,7 +118,7 @@ var chart = dc.compositeChart("#line-chart");
 		AnalysisChart
 			.width(280)
 			.height(300)
-			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.margins({top: 20, left: 10, right: 10, bottom: 25})
 			.dimension(AnalysisDim)
 			.group(AnalysisGroup)
 			.ordering(function(d) {return -d.value})		
@@ -137,7 +139,7 @@ var chart = dc.compositeChart("#line-chart");
 		AccLocationChart
 			.width(280)
 			.height(300)
-			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.margins({top: 20, left: 10, right: 10, bottom: 25})
 			.dimension(AccLocationDim)
 			.group(AccLocationGroup)
 			.ordering(function(d) {return -d.value})		
@@ -159,7 +161,7 @@ var chart = dc.compositeChart("#line-chart");
 		SpeedBracketChart
 			.width(280)
 			.height(300)
-			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.margins({top: 20, left: 10, right: 10, bottom: 25})
 			.dimension(SpeedBracketDim)
 			.group(SpeedBracketGroup)
 			.ordering(function(d) {return -d.value})		
@@ -172,6 +174,22 @@ var chart = dc.compositeChart("#line-chart");
 		
 		  
 		dc.renderAll();
+		
+		function AddXAxis(chartToUpdate, displayText)
+			{
+				chartToUpdate.svg()
+							.append("text")
+							.attr("class", "x-axis-label")
+							.attr("text-anchor", "middle")
+							.attr("font-size", "11px")
+							.attr("x", chartToUpdate.width()/2)
+							.attr("y", chartToUpdate.height())
+							.text(displayText);
+			}
+		AddXAxis(locationRowChart, "Exceedences");
+		AddXAxis(AnalysisChart, "Exceedences");
+		AddXAxis(AccLocationChart, "Exceedences");
+		AddXAxis(SpeedBracketChart, "Exceedences");
 		
 		
 		Exceedences1 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');  // Chrome inspect element copy selector
