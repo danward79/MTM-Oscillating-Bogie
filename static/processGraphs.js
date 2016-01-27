@@ -246,7 +246,8 @@ var chart = dc.compositeChart("#line-chart");
 	window.encodeFunction = function()
 		{
 			var chartsInDashboard = ['SpeedBracketChart'];
-			var f = new Function('chart2Process', "eval(chart2Process + '.filters()')" );
+			var f = new Function('return window.SpeedBracketChart.filters();' );    //ID#LHR01
+			var f2 = new Function('chart2process', "return eval('window.' + chart2process + '.filters();')" );    //ID#LHR02
 			
 			var filters = [];
 
@@ -265,7 +266,8 @@ var chart = dc.compositeChart("#line-chart");
 					//console.log(dc.chartRegistry.list().length);
 					//console.log(ChartsFilterState);
 					console.log(SpeedBracketChart.filters());
-					console.log(f(SpeedBracketChart));
+					console.log(f());                               // Works with ID#LHR01
+					console.log(f2(chartsInDashboard[0]));			// Works with ID#LHR02
 
 		}
 		
