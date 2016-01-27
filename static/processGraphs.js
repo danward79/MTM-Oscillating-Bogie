@@ -242,6 +242,48 @@ var chart = dc.compositeChart("#line-chart");
 			window.open("/static/Werribee_Route_29th_7.html", "Route 29th - 7", strWindowFeatures);
 		};
 	});
+	
+	window.encodeFunction = function()
+		{
+			var chartsInDashboard = ['SpeedBracketChart'];
+			var f = new Function('chart2Process', "eval(chart2Process + '.filters()')" );
+			
+			var filters = [];
+
+					for (var i = 0; i < dc.chartRegistry.list().length; i++)
+					 {
+						//alert('inside 1st for');
+						var chart = dc.chartRegistry.list()[i];
+
+						for (var j = 0; j < chart.filters().length; j++)
+						{
+							filters.push({ChartID: chart.chartID(), Filter: chart.filters()[j]}); 
+							console.log('inside 2nd for');
+						}
+					}
+					var ChartsFilterState =  encodeURIComponent(JSON.stringify(filters));
+					//console.log(dc.chartRegistry.list().length);
+					//console.log(ChartsFilterState);
+					console.log(SpeedBracketChart.filters());
+					console.log(f(SpeedBracketChart));
+
+		}
+		
+	
+	window.decodeFunction = function()
+		 {
+		   var urlParam="%5B%7B%22ChartID%22%3A4%2C%22Filter%22%3A%22Westona%20Station%22%7D%2C%7B%22ChartID%22%3A5%2C%22Filter%22%3A1%7D%2C%7B%22ChartID%22%3A6%2C%22Filter%22%3A%22Base%20Acceleration%22%7D%2C%7B%22ChartID%22%3A7%2C%22Filter%22%3A%22Bogie%202%22%7D%2C%7B%22ChartID%22%3A8%2C%22Filter%22%3A%22110-120%22%7D%5D";//encoded url here  
+		   var filterObjects = JSON.parse(decodeURIComponent(urlParam));
+
+			for (var i = 0; i< filterObjects.length; i++)
+			{	alert(filterObjects[i].ChartID-1);
+				dc.chartRegistry.list()[filterObjects[i].ChartID-1].filter(filterObjects[i].Filter);
+			}
+
+			// dc.renderAll();
+
+			dc.redrawAll();
+		 }
 };
 	
 	
