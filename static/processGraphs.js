@@ -199,24 +199,7 @@ var chart = dc.compositeChart("#line-chart");
 		document.getElementById("myExceedencesCounter").innerHTML = TotalExceedencesStatic;  // However this will be updated postRedrawing of charts
 		
 		
-		function reCountExceedences () {
-				
-				Exceed_recount1 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');
-				Exceed_recount2 = document.querySelector('#accLocationChart > svg > g > g.row._2 > title');
-				Total_Exc_reCount1 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value;
-
-				Exceed_recount1 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._0 > title');
-				Exceed_recount2 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._1 > title');
-				Exceed_recount3 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._2 > title');
-				Exceed_recount4 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._3 > title');
-				Total_Exc_reCount2 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value + Exceed_recount3.__data__.value + Exceed_recount4.__data__.value;
-				
-				if (document.getElementById("myExceedencesCounter").innerHTML == Total_Exc_reCount1) {
-					document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount2;
-				} else {
-					document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount1;
-				};
-		};
+		
 	
 		runRingChart.on("postRedraw", function(){
 			reCountExceedences();
@@ -243,49 +226,70 @@ var chart = dc.compositeChart("#line-chart");
 		};
 	});
 	
+	
+};
+
+	function reCountExceedences () {
+			
+			Exceed_recount1 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');
+			Exceed_recount2 = document.querySelector('#accLocationChart > svg > g > g.row._2 > title');
+			Total_Exc_reCount1 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value;
+
+			Exceed_recount1 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._0 > title');
+			Exceed_recount2 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._1 > title');
+			Exceed_recount3 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._2 > title');
+			Exceed_recount4 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._3 > title');
+			Total_Exc_reCount2 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value + Exceed_recount3.__data__.value + Exceed_recount4.__data__.value;
+			
+			if (document.getElementById("myExceedencesCounter").innerHTML == Total_Exc_reCount1) {
+				document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount2;
+			} else {
+				document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount1;
+			};
+	};
+	
 	window.encodeFunction = function()
 		{
-			var chartsInDashboard = ['SpeedBracketChart'];
-			var f = new Function('return window.SpeedBracketChart.filters();' );    //ID#LHR01
-			var f2 = new Function('chart2process', "return eval('window.' + chart2process + '.filters();')" );    //ID#LHR02
+			var chartsInDashboard = ['locationRowChart','runRingChart','AnalysisChart','AccLocationChart','SpeedBracketChart']; // Line chart not needed as it cannot filter
+			//var f = new Function('return window.SpeedBracketChart.filters();' );    								//Working alternatives left for sintax reference
+			// var f = new Function('chart2process', "return eval('window.' + chart2process + '.filters();')" );    //Working alternatives left for sintax reference
+			var f = new Function('chart2process', 'counter', "return eval(chart2process + '.filters()['+counter+'];')" ); 
+			var numFilters = new Function('chart2process', "return eval(chart2process + '.filters().length;')");
 			
 			var filters = [];
 
-					for (var i = 0; i < dc.chartRegistry.list().length; i++)
+					for (var i = 0; i < chartsInDashboard.length; i++)
 					 {
-						//alert('inside 1st for');
-						var chart = dc.chartRegistry.list()[i];
-
-						for (var j = 0; j < chart.filters().length; j++)
+						for (var j = 0; j < numFilters(chartsInDashboard[i]); j++)
 						{
-							filters.push({ChartID: chart.chartID(), Filter: chart.filters()[j]}); 
-							console.log('inside 2nd for');
+							filters.push({ChartID: chartsInDashboard[i], Filter: f(chartsInDashboard[i],j)});
 						}
 					}
+					
 					var ChartsFilterState =  encodeURIComponent(JSON.stringify(filters));
-					//console.log(dc.chartRegistry.list().length);
-					//console.log(ChartsFilterState);
-					console.log(SpeedBracketChart.filters());
-					console.log(f());                               // Works with ID#LHR01
-					console.log(f2(chartsInDashboard[0]));			// Works with ID#LHR02
-
+					
+					console.log(ChartsFilterState);
 		}
 		
 	
 	window.decodeFunction = function()
 		 {
-		   var urlParam="%5B%7B%22ChartID%22%3A4%2C%22Filter%22%3A%22Westona%20Station%22%7D%2C%7B%22ChartID%22%3A5%2C%22Filter%22%3A1%7D%2C%7B%22ChartID%22%3A6%2C%22Filter%22%3A%22Base%20Acceleration%22%7D%2C%7B%22ChartID%22%3A7%2C%22Filter%22%3A%22Bogie%202%22%7D%2C%7B%22ChartID%22%3A8%2C%22Filter%22%3A%22110-120%22%7D%5D";//encoded url here  
-		   var filterObjects = JSON.parse(decodeURIComponent(urlParam));
-
-			for (var i = 0; i< filterObjects.length; i++)
-			{	alert(filterObjects[i].ChartID-1);
-				dc.chartRegistry.list()[filterObjects[i].ChartID-1].filter(filterObjects[i].Filter);
+		   dc.filterAll();
+		   //var urlParam="%5B%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A3%7D%5D";//encoded url here for run (integer)
+		   //var urlParam="%5B%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Westona%20Station%22%7D%5D" //encoded url here for location (string)
+		   var urlParam="%5B%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Altona%20Station%22%7D%2C%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A3%7D%5D"  // Int & String
+		   
+		   var filteredObjects = JSON.parse(decodeURIComponent(urlParam));
+		   var fInt = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + filterlogged.Filter +');')" );
+		   var fStg = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + String.fromCharCode(39) + filterlogged.Filter + String.fromCharCode(39) + ');')" );
+		   
+			for (var i = 0; i< filteredObjects.length; i++) {
+				//dc.chartRegistry.list()[filteredObjects[i].ChartID].filter(filteredObjects[i].Filter);
+				try {
+					fInt(filteredObjects[i]);
+				} catch(e) {
+					fStg(filteredObjects[i]);
+				}
 			}
-
-			// dc.renderAll();
-
 			dc.redrawAll();
 		 }
-};
-	
-	
