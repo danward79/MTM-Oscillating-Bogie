@@ -107,6 +107,42 @@ var chart = dc.compositeChart("#line-chart");
 			.renderLabel(true)
 			.renderTitle(true);
 			
+			
+// BoxPlot chart code
+			
+		boxPlotChart   = dc.boxPlot("#boxplot-chart");			// Note that 'var' has been removed in order to be able to reset chart
+		
+		var locationDimension2 = ndx.dimension(function(d) {return d["Nearest Station"] ;});   // Second dimension on Nearest Station
+		//locationDimension2.filter(function (d) {return d !== ""});
+		
+		speedArrayGroup     = locationDimension.group().reduce(
+			function(p,v) {
+			  p.push(v.Speed);
+			  return p;
+			},
+			function(p,v) {
+			  p.splice(p.indexOf(v.Speed), 1);
+			  return p;
+			},
+			function() {
+			  return [];
+			}
+		);
+		
+		
+		boxPlotChart
+			.width(1050)
+			.height(300)
+			.margins({top: 10, right: 50, bottom: 30, left: 50})
+			.dimension(locationDimension2)
+			.group(speedArrayGroup)
+			.renderVerticalGridLines(true)
+			.renderHorizontalGridLines(true)
+			.brushOn(true)
+			.elasticY(true)
+			.elasticX(true);			
+
+			
 // Analysis chart code
 	
 		AnalysisChart   = dc.rowChart("#AnalisysChart");			// Note that 'var' has been removed in order to be able to reset chart
