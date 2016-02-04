@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MTM Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/keen-dashboards.css" />
+  <script type="text/javascript" src="static/crossfilter.js"></script>
+  <script src="static/d3.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/dc.css" media="screen" /> 
+  <script src="static/dcWebExamples.js" type="text/javascript"></script>
+  
+  <link rel="stylesheet" type="text/css" href="static/jquery.dataTables.min.css" />
+  <script src="static/jquery-1.11.3.min.js" type="text/javascript"></script>
+  <script src="static/jquery.dataTables.min.js" type="text/javascript"></script>
+  
+  <script type="text/javascript" src="static/bootstrap.min.js"></script>
+  <script type="text/javascript" src="static/holder.js"></script>
+  <script>
+    Holder.add_theme("white", { background:"#fff", foreground:"#a7a7a7", size:10 });
+  </script>
+
+  <script type="text/javascript" src="static/keen.min.js"></script>
+  <script type="text/javascript" src="static/meta.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/rotateXaxisLabelsLHR.css" media="screen" />
+  
+  <script src="static/intro.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="static/introjs.css" />
+  <script src="static/queue.js"></script>
+  <script src="static/processGraphs.js" type='text/javascript'></script>
+
+
+  
+</head>
+<body class="application">
+
+
+  <div class="navbar navbar-inverse navbar-fixed-top" >
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" >MTM Dynamic Testing Dashboard. Werribee Line Results
+			<a style="float:right" class="btn btn btn-success" href="javascript:void(0);" onclick="javascript:introJs().start();">Tutorial</a>
+		</a>
+
+      </div>
+	  <div id="range-chart" data-step='1' data-intro='This Interactive Dashboard presents dynamic test data for a rolling stock technical assessment.
+	  <br/><br/>By clicking and selecting different events in graphs, you can filter the entire dashboard to drill into a particular event.<br/><br/>
+	  By doing this, interesting patterns can be found.'></div>
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Exceedences Visualisation
+          </div>
+		  
+          <div class="chart-stage">
+			<div id="line-chart"></div>
+			<div id="range-chart" data-step='8' data-intro='Hover the mouse cursor on the Exceedences legend to show Exceedences data points only. Please note that cursor may need to stay over the legend for a couple of seconds.'></div>
+		  </div>
+		  
+          <div class="chart-notes">
+            Several runs may be shown. GPS data displayed is just to give context of a train moving along a run.
+          </div>
+        </div>
+      </div>
+	  
+	  <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+           Network Location chart
+          </div>
+          <div class="chart-stage">
+            <div id="row-chart">
+				 <div id="range-chart" data-step='2' data-intro='By clicking on chart row bars (e.g. Altona Station), data can be filtered. More than one bar can be clicked in order to apply a combination of filters.'></div>
+			</div>
+          </div>
+          <div class="chart-notes">
+            Click on any row bar to filter data.
+          </div>
+		 
+        </div>
+      </div>
+	  
+      <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Run selector
+          </div>
+          <div class="chart-stage">
+            <div id="ring-RunChart" >
+				<div id="range-chart" data-step='3' data-intro='By hovering the mouse cursor on row bars or ring slices, the number of Exceedences will be shown for that particular data element.'></div>
+			</div>
+          </div>
+          <div class="chart-notes">
+            A total of 4 test runs are presented
+          </div>
+        </div>
+      </div>
+	  
+	  
+	  <div class="dc-data-count" style="float: right;">
+			<div id="range-chart" data-step='4' data-intro='The overall count of Exceedences (which is the combination of any filtering done on the charts) is displayed in this section.'></div>
+				<span >  
+				<label id="myExceedencesCounter"></label>
+				events out of <label id="myTotalExceedences"></label>
+				exceedences |
+					<a href="javascript:dc.filterAll(); dc.renderAll(); reCountExceedences ();">Reset All</a>
+					<div id="range-chart" data-step='5' data-intro='Click "Reset All" to clear all filters or selections applied. Alternatively, click on the browser refresh icon.'></div>
+				</span>
+				
+			<p>
+	  
+				<br />
+				<br />
+				  <select id="myDropDown">
+						  <option value='0'>Select Route to display</option>
+						  <option value='1'>Route 4th - 6</option>
+						  <option value='2'>Route 23rd - 7</option>
+						  <option value="3">Route 29th - 5</option>
+						  <option value="4">Route 29th - 7</option>
+				  </select>
+				  <div id="range-chart" data-step='6' data-intro='GPS data and Exceedences can also be shown as a map overlay.'></div>
+			</p>
+			
+			<button type="button" onclick="encodeFunction()">Save Filter Status</button>
+			<button type="button" onclick="decodeFunction()">Restore Filter</button>
+				
+		</div>
+	
+	
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Box Plot Visualisation
+          </div>
+		  
+          <div class="chart-stage">
+			<div id="boxplot-chart"></div>
+			
+		  </div>
+		  
+          <div class="chart-notes">
+            Speed distribution across locations
+          </div>
+        </div>
+      </div>
+	  
+      
+	  
+	   <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Speed range selector
+          </div>
+          <div class="chart-stage">
+            <div id="speedBracketChart" >
+				
+			</div>
+          </div>
+          <div class="chart-notes">
+            GPS chart bars are only for context.
+          </div>
+        </div>
+      </div>
+
+    </div>
+	
+    <div class="row">
+
+     <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Analysis Type selector
+          </div>
+		  <div id="range-chart" data-step='7' data-intro='Any chart on the Dashboard is fully interactive'></div>
+          <div class="chart-stage">
+            <div id="AnalisysChart" >
+				
+			</div>
+          </div>
+          <div class="chart-notes">
+            This selects the algorithm used to calculate Exceedences.
+          </div>
+        </div>
+      </div>
+	  
+	  <div class="col-sm-6 col-md-3">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            Accelerometer Location selector
+          </div>
+          <div class="chart-stage">
+            <div id="accLocationChart">
+			</div>
+          </div>
+          <div class="chart-notes">
+            The position of the accelerometer
+          </div>
+        </div>
+      </div>
+	  
+
+    </div>
+
+    <hr>
+
+   <p class="small text-muted">NAS Version reading from phpMyAdmin using php script 0.1 LHR 4 Feb '16 ></p>
+
+  </div>
+
+
+  
+  <script>
+
+
+
+	d3.json("static/data.php", function (data) {
+		nil = {};
+		makeGraphs(nil, data);  // This invokes makeGraphs inside processGraphs.js
+ });
+ 
+  
+  </script>
+  
+  
+</body>
+
+</html>
