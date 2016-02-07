@@ -265,28 +265,62 @@ var chart = dc.compositeChart("#line-chart");
 	
 };
 
-	function reCountExceedences () {
-			
-			Exceed_recount1 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');
-			Exceed_recount2 = document.querySelector('#accLocationChart > svg > g > g.row._2 > title');
-			Total_Exc_reCount1 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value;
 
-			Exceed_recount1 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._0 > title');
-			Exceed_recount2 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._1 > title');
-			Exceed_recount3 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._2 > title');
-			Exceed_recount4 = document.querySelector('#ring-RunChart > svg > g > g.pie-slice._3 > title');
-			Total_Exc_reCount2 = Exceed_recount1.__data__.value + Exceed_recount2.__data__.value + Exceed_recount3.__data__.value + Exceed_recount4.__data__.value;
+	function reCountExceedences() {
+		
+		// It needs to be checked that:
+		// a) Row is not deselected so it can be counted
+		// b) Row does not correspond to GPS data
+		// c) Row can have three states: rect, rect.selected or rect.deselected
+		// Rows can be reordered by dc.js hence all three of them need to be constantly checked
+		
+		selector2check1 = document.querySelector('#accLocationChart > svg > g > g.row._0 > rect.deselected');        // if is not deselected, it is either selected or just rect and should be counted (providing that it is not GPS that is)
+		if( selector2check1 == null) {
+		  NoGPSCheck1 = JSON.stringify(document.querySelector('#accLocationChart > svg > g > g.row._0 > text'));
+					if (NoGPSCheck1.includes("GPS")) {
+						Exceed_recount1 = 0;
+					} else {
+						Exceed_recount1 = document.querySelector('#accLocationChart > svg > g > g.row._0 > title');
+						Exceed_recount1 = Exceed_recount1.__data__.value;}
+		  }
+		else {
+		  Exceed_recount1 = 0; }
+		  
+		selector2check2 = document.querySelector('#accLocationChart > svg > g > g.row._1 > rect.deselected');
+		if( selector2check2 == null) {
+		  NoGPSCheck2 = JSON.stringify(document.querySelector('#accLocationChart > svg > g > g.row._1 > text'));
+					if (NoGPSCheck2.includes("GPS")) {
+						Exceed_recount2 = 0;
+					} else {
+						Exceed_recount2 = document.querySelector('#accLocationChart > svg > g > g.row._1 > title');
+						Exceed_recount2 = Exceed_recount2.__data__.value;}
+		  }
+		else {
+		  Exceed_recount2 = 0; }
+		
+		selector2check3 = document.querySelector('#accLocationChart > svg > g > g.row._2 > rect.deselected');
+		if( selector2check3 == null) {
+		  NoGPSCheck3 = JSON.stringify(document.querySelector('#accLocationChart > svg > g > g.row._2 > text'));
+					if (NoGPSCheck3.includes("GPS")) {
+						Exceed_recount3 = 0;
+					} else {
+						Exceed_recount3 = document.querySelector('#accLocationChart > svg > g > g.row._2 > title');
+						Exceed_recount3 = Exceed_recount3.__data__.value;}
+		  }
+		else {
+		  Exceed_recount3 = 0; }
+		  
+		  
+		Total_Exc_reCount =  Exceed_recount1 + Exceed_recount2 + Exceed_recount3;
 			
-			if (document.getElementById("myExceedencesCounter").innerHTML == Total_Exc_reCount1) {
-				document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount2;
-			} else {
-				document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount1;
-			};
-	};
+		document.getElementById("myExceedencesCounter").innerHTML = Total_Exc_reCount;
+		
+	}
+	
 	
 	window.encodeFunction = function()
 		{
-			var chartsInDashboard = ['locationRowChart','runRingChart','AnalysisChart','AccLocationChart','SpeedBracketChart']; // Line chart not needed as it cannot filter
+			var chartsInDashboard = ['locationRowChart','runRingChart','AnalysisChart','AccLocationChart','SpeedBracketChart','boxPlotChart']; // Line chart not needed as it cannot filter
 			//var f = new Function('return window.SpeedBracketChart.filters();' );    								//Working alternatives left for sintax reference
 			// var f = new Function('chart2process', "return eval('window.' + chart2process + '.filters();')" );    //Working alternatives left for sintax reference
 			var f = new Function('chart2process', 'counter', "return eval(chart2process + '.filters()['+counter+'];')" ); 
@@ -301,7 +335,7 @@ var chart = dc.compositeChart("#line-chart");
 							filters.push({ChartID: chartsInDashboard[i], Filter: f(chartsInDashboard[i],j)});
 						}
 					}
-					
+					console.log(filters);
 					var ChartsFilterState =  encodeURIComponent(JSON.stringify(filters));
 					
 					console.log(ChartsFilterState);
@@ -311,10 +345,7 @@ var chart = dc.compositeChart("#line-chart");
 	window.decodeFunction = function()
 		 {
 		   dc.filterAll();
-		   //var urlParam="%5B%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A3%7D%5D";//encoded url here for run (integer)
-		   //var urlParam="%5B%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Westona%20Station%22%7D%5D" //encoded url here for location (string)
-		   var urlParam="%5B%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Altona%20Station%22%7D%2C%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A3%7D%5D"  // Int & String
-		   
+		   var urlParam="%5B%7B%22ChartID%22%3A%22boxPlotChart%22%2C%22Filter%22%3A%22Altona%22%7D%5D";
 		   var filteredObjects = JSON.parse(decodeURIComponent(urlParam));
 		   var fInt = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + filterlogged.Filter +');')" );
 		   var fStg = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + String.fromCharCode(39) + filterlogged.Filter + String.fromCharCode(39) + ');')" );
