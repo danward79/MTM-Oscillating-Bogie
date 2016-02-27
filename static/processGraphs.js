@@ -188,7 +188,7 @@ var chart = dc.compositeChart("#line-chart");
 			
 // Ring chart 4 code
 			
-		SpeedBracketChart   = dc.rowChart("#speedBracketChart");			// Note that 'var' has been removed in order to be able to reset chart
+		SpeedBracketChart   = dc.rowChart("#speedBracketWidget");			// Note that 'var' has been removed in order to be able to reset chart
 		
 		SpeedBracketDim = ndx.dimension(function(d) {return d['Speed Bracket'];});
 		
@@ -320,7 +320,7 @@ var chart = dc.compositeChart("#line-chart");
 	
 	window.encodeFunction = function()
 		{
-			var chartsInDashboard = ['locationRowChart','runRingChart','AnalysisChart','AccLocationChart','SpeedBracketChart']; // Line chart not needed as it cannot filter
+			var chartsInDashboard = ['locationRowChart','runRingChart','AnalysisChart','AccLocationChart','SpeedBracketChart', 'boxPlotChart']; // Line chart not needed as it cannot filter
 			//var f = new Function('return window.SpeedBracketChart.filters();' );    								//Working alternatives left for sintax reference
 			// var f = new Function('chart2process', "return eval('window.' + chart2process + '.filters();')" );    //Working alternatives left for sintax reference
 			var f = new Function('chart2process', 'counter', "return eval(chart2process + '.filters()['+counter+'];')" ); 
@@ -361,16 +361,33 @@ var chart = dc.compositeChart("#line-chart");
 			dc.redrawAll();
 		 }
 		 
-	window.decodeFunction_custom = function()
+	window.decodeFilter_1 = function()
 		 {
 		   dc.filterAll();
-		   var urlParam="%5B%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Westona%22%7D%2C%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A3%7D%2C%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A2%7D%2C%7B%22ChartID%22%3A%22SpeedBracketChart%22%2C%22Filter%22%3A%22110-120%22%7D%5D";
+		   var urlParam="%5B%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Westona%22%7D%2C%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A1%7D%2C%7B%22ChartID%22%3A%22runRingChart%22%2C%22Filter%22%3A2%7D%2C%7B%22ChartID%22%3A%22SpeedBracketChart%22%2C%22Filter%22%3A%22110%20to%20120%22%7D%2C%7B%22ChartID%22%3A%22boxPlotChart%22%2C%22Filter%22%3A%22Westona%22%7D%5D";
 		   var filteredObjects = JSON.parse(decodeURIComponent(urlParam));
 		   var fInt = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + filterlogged.Filter +');')" );
 		   var fStg = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + String.fromCharCode(39) + filterlogged.Filter + String.fromCharCode(39) + ');')" );
 		   
 			for (var i = 0; i< filteredObjects.length; i++) {
-				//dc.chartRegistry.list()[filteredObjects[i].ChartID].filter(filteredObjects[i].Filter);
+				try {
+					fInt(filteredObjects[i]);
+				} catch(e) {
+					fStg(filteredObjects[i]);
+				}
+			}
+			dc.redrawAll();
+		 }
+		 
+	window.decodeFilter_2 = function()
+		 {
+		   dc.filterAll();
+		   var urlParam="%5B%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Hoppers%20Crossing%22%7D%2C%7B%22ChartID%22%3A%22locationRowChart%22%2C%22Filter%22%3A%22Westona%22%7D%2C%7B%22ChartID%22%3A%22AccLocationChart%22%2C%22Filter%22%3A%22Bogie%202%22%7D%5D";
+		   var filteredObjects = JSON.parse(decodeURIComponent(urlParam));
+		   var fInt = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + filterlogged.Filter +');')" );
+		   var fStg = new Function('filterlogged', "return eval(filterlogged.ChartID + '.filter(' + String.fromCharCode(39) + filterlogged.Filter + String.fromCharCode(39) + ');')" );
+		   
+			for (var i = 0; i< filteredObjects.length; i++) {
 				try {
 					fInt(filteredObjects[i]);
 				} catch(e) {
